@@ -1,0 +1,156 @@
+let currentLang = 'ar';
+let markers = [];
+let polylines = [];
+
+
+const trans = {
+    ar: { 
+        title: "رصــد | Rased", 
+        subtitle: "نظام إدارة النفايات الذكي - الخليل", 
+        run: "تشغيل المحاكاة", 
+        lang: "English", 
+        status: "الحالة الراهنة", 
+        ready: "جاهز للعمل", 
+        served: "جورات تمت خدمتها", 
+        legend: "دليل الخريطة", 
+        high: "أولوية قصوى (خطر فيضان)", 
+        med: "أولوية متوسطة", 
+        low: "حالة مستقرة", 
+        loading: "جارٍ التحليل...", 
+        fill: "نسبة الامتلاء", 
+        tto: "الوقت المتبقي" 
+    },
+    en: { 
+        title: "RASED | System", 
+        subtitle: "Smart Waste System - Hebron", 
+        run: "Run Simulation", 
+        lang: "العربية", 
+        status: "Current Status", 
+        ready: "Ready", 
+        served: "Tanks Served", 
+        legend: "Legend", 
+        high: "High Priority (Risk)", 
+        med: "Medium Priority", 
+        low: "Stable", 
+        loading: "Analyzing...", 
+        fill: "Fill Level", 
+        tto: "Time to Overflow" 
+    }
+};
+
+
+const map = L.map('map').setView([31.53, 35.10], 14);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+
+
+function toggleLanguage() {
+    currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    const t = trans[currentLang];
+    
+    document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    
+
+    document.getElementById('nav-title').innerText = t.title;
+    document.getElementById('nav-subtitle').innerText = t.subtitle;
+    document.getElementById('run-btn').innerText = t.run;
+    document.getElementById('lang-btn').innerText = t.lang;
+    document.getElementById('label-status').innerText = t.status;
+    document.getElementById('label-served').innerText = t.served;
+    document.getElementById('label-legend').innerText = t.legend;
+    document.getElementById('leg-high').innerText = t.high;
+    document.getElementById('leg-med').innerText = t.med;
+    document.getElementById('leg-low').innerText = t.low;
+}
+
+
+async function runSimulation() {
+    const btn = document.getElementById('run-btn');
+    btn.innerText = trans[currentLang].loading;
+    btn.disabled = true; // تعطيل الزر أثناء التحميل
+
+
+    markers.forEach(m => map.removeLayer(m));
+    polylines.forEach(p => map.removeLayer(p));
+    markers = []; 
+    polylines = [];
+
+    try {
+        // استبدل هذا الرابط برابط الـ API الخاص بك من Google Colab أو السيرفر
+        const API_URL = 'YOUR_COLAB_URL/run-simulation';
+        const response = await fetch(API_URL);
+        
+        if (!response.ok) throw new Error("Network response was not ok");
+        
+        const data = await response.json();
+
+        
+        document.getElementById('served-count').innerText = data.metrics.served_total;
+        document.getElementById('current-status').innerText = "تم تحديث البيانات";
+
+       
+        data.pits.forEach(pit => {
+            const color = getPriorityColor(pit.tier);
+            const isHigh = pit.tier === 'HIGH';
+            
+            const icon = L.divIcon({
+                className: '',
+                html: `<div style="background-color:${color}; width:15px; height:15px; border-radius:50%; border:2px solid white;" 
+                        class="${isHigh ? 'hazard-ping' : ''}"></div>`,
+                iconSize: [15, 15],
+                iconAnchor: [7, 7]
+            });
+
+            const popupContent = createPopupTemplate(pit);
+            const m = L.marker([pit.lat, pit.lon], { icon }).bindPopup(popupContent, { className: 'custom-popup' }).addTo(map);
+            markers.push(m);
+        });
+
+       
+        drawRoutes(data);
+
+    } catch (err) {
+        console.error("Error fetching data:", err);
+        alert("فشل تحميل البيانات. تأكد من أن السيرفر يعمل.");
+    } finally {
+        btn.innerText = trans[currentLang].run;
+        btn.disabled = false;
+    }
+}
+
+function getPriorityColor(tier) {
+    if (tier === 'HIGH') return '#ef4444'; 
+    if (tier === 'MEDIUM') return '#f97316'; 
+    return '#3b82f6'; 
+}
+
+function createPopupTemplate(pit) {
+    return `
+        <div class="${currentLang === 'ar' ? 'text-right' : 'text-left'}" style="color:#111;">
+            <h4 class="font-bold border-b mb-1">ID: #${pit.tank_id}</h4>
+            <p class="text-xs">${trans[currentLang].fill}: ${pit.level_pct}%</p>
+            <div style="width:100%; background:#ddd; height:6px; border-radius:3px; margin:4px 0;">
+                <div style="width:${pit.level_pct}%; background:${pit.level_pct > 80 ? 'red' : '#3b82f6'}; height:100%; border-radius:3px;"></div>
+            </div>
+            <p class="text-xs"><b>${trans[currentLang].tto}:</b> ${pit.tto_hours} h</p>
+        </div>
+    `;
+}
+
+function drawRoutes(data) {
+    Object.values(data.routes).forEach(route => {
+        const path = route.assigned_pits
+            .map(id => {
+                const p = data.pits.find(x => x.tank_id == id);
+                return p ? [p.lat, p.lon] : null;
+            })
+            .filter(coord => coord !== null);
+
+        const poly = L.polyline(path, {
+            color: '#3b82f6',
+            weight: 3,
+            dashArray: '5, 10',
+            opacity: 0.6
+        }).addTo(map);
+        polylines.push(poly);
+    });
+}
