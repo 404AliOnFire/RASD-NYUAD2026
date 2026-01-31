@@ -45,5 +45,18 @@ def main():
     print("\n--- TOP PRIORITIES ---")
     print(out.head(10).to_string(index=False))
 
+    # 3) Build routing inputs + baseline + quantum simulation
+    print("\n✅ building routing inputs")
+    from generate_routing_inputs import main as gen_inputs_main
+    gen_inputs_main()
+
+    print("\n✅ building baseline routes")
+    from build_baseline_routes import main as baseline_main
+    baseline_main()
+
+    print("\n✅ running quantum annealing simulation")
+    from optimize_quantum_sim import main as quantum_sim_main
+    quantum_sim_main()
+
 if __name__ == "__main__":
     main()

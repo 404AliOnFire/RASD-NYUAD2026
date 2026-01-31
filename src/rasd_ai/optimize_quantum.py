@@ -1,4 +1,3 @@
-# FIXED VERSION: optimize_quantum.py
 # Hackathon-safe Quantum/Hybrid Optimizer (Assignment via CQM + Greedy Routing)
 
 import json
@@ -11,9 +10,12 @@ import pandas as pd
 import dimod
 from dimod import ConstrainedQuadraticModel, Binary
 
-# -----------------------------
-# Pack A settings (Demo)
-# -----------------------------
+
+
+#----------------------------------------------------------
+# NOTE THIS IS ONLY WORKS WHEN API CQM IS AVAILABLE THE REAL DEMO IS ON optimize_quantum_sim
+#-------------------------------------------------------------
+
 W_PRIORITY = 350.0
 W_TRAVEL = 1.0
 W_LATE = {"HIGH": 90, "MEDIUM": 30, "LOW": 10}
@@ -204,7 +206,7 @@ def main():
     save_json(out / "quantum_routes.json", routes)
     save_json(out / "quantum_metrics.json", metrics)
 
-    print("✅ Quantum optimization finished")
+    print(" Quantum optimization finished")
     print(metrics)
 
 
