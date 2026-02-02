@@ -8,9 +8,6 @@ import numpy as np
 import pandas as pd
 
 
-# -----------------------------
-# Config (Demo Fixed)
-# -----------------------------
 TOP_N = 30
 N_TRUCKS = 4
 SHIFT_MIN = 480

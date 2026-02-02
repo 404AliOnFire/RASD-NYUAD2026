@@ -5,7 +5,7 @@ let polylines = [];
 
 const trans = {
     ar: { 
-        title: "رصــد | Rased", 
+        title: "رصــد | RASD",
         subtitle: "نظام إدارة النفايات الذكي - الخليل", 
         run: "تشغيل المحاكاة", 
         lang: "English", 
@@ -21,7 +21,7 @@ const trans = {
         tto: "الوقت المتبقي" 
     },
     en: { 
-        title: "RASED | System", 
+        title: "RASD | System",
         subtitle: "Smart Waste System - Hebron", 
         run: "Run Simulation", 
         lang: "العربية", 

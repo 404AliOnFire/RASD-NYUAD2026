@@ -1,4 +1,3 @@
-# Hackathon-safe Quantum/Hybrid Optimizer (Assignment via CQM + Greedy Routing)
 
 import json
 from pathlib import Path
@@ -14,6 +13,7 @@ from dimod import ConstrainedQuadraticModel, Binary
 
 #----------------------------------------------------------
 # NOTE THIS IS ONLY WORKS WHEN API CQM IS AVAILABLE THE REAL DEMO IS ON optimize_quantum_sim
+# CODED BY ALI & DIAA
 #-------------------------------------------------------------
 
 W_PRIORITY = 350.0
