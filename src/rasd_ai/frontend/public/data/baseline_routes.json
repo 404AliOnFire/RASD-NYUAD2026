@@ -1,0 +1,85 @@
+{
+  "truck_1": {
+    "sequence": [
+      "depot",
+      7,
+      13,
+      15,
+      2,
+      4,
+      6,
+      "depot"
+    ],
+    "served_pits": [
+      7,
+      13,
+      15,
+      2,
+      4,
+      6
+    ],
+    "capacity": 18,
+    "shift_min": 480,
+    "type": "small"
+  },
+  "truck_2": {
+    "sequence": [
+      "depot",
+      18,
+      5,
+      14,
+      16,
+      11,
+      3,
+      19,
+      12,
+      8,
+      1,
+      10,
+      0,
+      "depot"
+    ],
+    "served_pits": [
+      18,
+      5,
+      14,
+      16,
+      11,
+      3,
+      19,
+      12,
+      8,
+      1,
+      10,
+      0
+    ],
+    "capacity": 22,
+    "shift_min": 480,
+    "type": "medium"
+  },
+  "truck_3": {
+    "sequence": [
+      "depot",
+      17,
+      9,
+      "depot"
+    ],
+    "served_pits": [
+      17,
+      9
+    ],
+    "capacity": 26,
+    "shift_min": 480,
+    "type": "large"
+  },
+  "truck_4": {
+    "sequence": [
+      "depot",
+      "depot"
+    ],
+    "served_pits": [],
+    "capacity": 22,
+    "shift_min": 480,
+    "type": "medium"
+  }
+}

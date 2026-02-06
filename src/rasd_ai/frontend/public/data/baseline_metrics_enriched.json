@@ -1,0 +1,28 @@
+{
+  "served_total": 20,
+  "missed_total": 0,
+  "high_total": 10,
+  "high_served": 10,
+  "high_missed": 0,
+  "medium_total": 2,
+  "medium_served": 2,
+  "medium_missed": 0,
+  "low_total": 8,
+  "low_served": 8,
+  "low_missed": 0,
+  "total_distance_km": 44.33,
+  "fuel_l_est": 15.51,
+  "co2_kg_est": 41.58,
+  "distance_by_truck_km": {
+    "truck_1": 11.59,
+    "truck_2": 26.29,
+    "truck_3": 6.44,
+    "truck_4": 0.0
+  },
+  "stops_by_truck": {
+    "truck_1": 6,
+    "truck_2": 12,
+    "truck_3": 2,
+    "truck_4": 0
+  }
+}

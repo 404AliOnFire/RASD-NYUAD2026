@@ -1,0 +1,14 @@
+{
+  "served_total": 20,
+  "missed_total": 0,
+  "high_total": 10,
+  "high_served": 10,
+  "high_missed": 0,
+  "medium_total": 2,
+  "medium_served": 2,
+  "low_total": 8,
+  "low_served": 8,
+  "total_travel_min": 144.04,
+  "total_service_min": 260.0,
+  "total_penalty": 7910.88
+}

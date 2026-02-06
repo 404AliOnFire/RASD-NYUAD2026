@@ -1,0 +1,26 @@
+[
+  {
+    "truck_id": 1,
+    "capacity": 18,
+    "shift_min": 480,
+    "type": "small"
+  },
+  {
+    "truck_id": 2,
+    "capacity": 22,
+    "shift_min": 480,
+    "type": "medium"
+  },
+  {
+    "truck_id": 3,
+    "capacity": 26,
+    "shift_min": 480,
+    "type": "large"
+  },
+  {
+    "truck_id": 4,
+    "capacity": 22,
+    "shift_min": 480,
+    "type": "medium"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "truck_1": {
+    "assigned_pits": [
+      2,
+      6,
+      7,
+      18
+    ],
+    "solver": "ocean_simulated_annealing"
+  },
+  "truck_2": {
+    "assigned_pits": [
+      4,
+      5,
+      15,
+      13,
+      14,
+      16
+    ],
+    "solver": "ocean_simulated_annealing"
+  }
+}
