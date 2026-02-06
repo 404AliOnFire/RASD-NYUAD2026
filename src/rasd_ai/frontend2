@@ -1,8 +1,0 @@
-project/
-│ frontend.html
-│ outputs/
-│    priorities.csv
-│    nodes.json
-│    trucks.json
-│    baseline_routes.json
-│    baseline_metrics.json

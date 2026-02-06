@@ -252,7 +252,6 @@ def build_baseline_routes(
         "total_penalty": round(total_penalty, 2),
     }
 
-    # Optional: include per-truck route details for frontend
     route_details = {}
     for truck in trucks:
         tid = int(truck["truck_id"])

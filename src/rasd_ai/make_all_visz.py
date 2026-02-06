@@ -31,7 +31,7 @@ TOP_MED = 4
 TOP_LOW = 4
 
 # =========================
-# Global matplotlib style (white background, slide-friendly)
+# Global matplotlib style
 # =========================
 plt.rcParams.update({
     "figure.facecolor": "white",
@@ -119,7 +119,6 @@ def viz_forecast():
     df["level_pct"] = pd.to_numeric(df["level_pct"], errors="coerce")
     df = df.dropna(subset=["level_pct"])
 
-    # choose a tank where last value not fully saturated (so forecast is visible)
     candidates = []
     for tid, g in df.groupby("tank_id"):
         g = g.copy()
@@ -162,10 +161,9 @@ def viz_forecast():
     yhat = [y[-1] + slope * (i + 1) for i in range(horizon_pts)]
     yhat = [min(100.0, v) for v in yhat]
 
-    # VISUAL OFFSET فقط عشان يبان (مش للحساب)
     yhat_vis = [min(100.0, v + 0.8) for v in yhat]
 
-    fig = plt.figure(figsize=(12, 4.5), dpi=200)  # عريض زي أول + مناسب للسلايد
+    fig = plt.figure(figsize=(12, 4.5), dpi=200)
     ax = plt.gca()
 
     ax.plot(d[time_col], d["level_pct"], linewidth=2.0, alpha=0.8, label="Sensor Data")
@@ -196,7 +194,7 @@ def viz_forecast():
 
 
 # =========================
-# Viz 2: Priority WOW (HIGH/MED/LOW)
+# Viz 2: Priority  (HIGH/MED/LOW)
 # =========================
 def viz_priority_wow():
     if not os.path.exists(PRIORITIES_CSV):
@@ -252,7 +250,7 @@ def viz_priority_wow():
     plt.tight_layout()
     out = os.path.join(OUT_DIR, "viz_2_priority_wow.png")
     plt.savefig(out, dpi=280)
-    print(f"✅ saved {out}")
+    print(f" saved {out}")
     plt.close(fig)
 
 
@@ -268,7 +266,7 @@ def viz_priority_breakdown():
 
     needed = {"base", "gas_anom", "env_anom", "priority", "tank_id"}
     if not needed.issubset(set(df.columns)):
-        print("⚠️ priorities.csv missing required columns (base/gas_anom/env_anom/priority/tank_id)")
+        print("priorities.csv missing required columns (base/gas_anom/env_anom/priority/tank_id)")
         return
 
     for c in ["base", "gas_anom", "env_anom", "priority"]:
@@ -354,7 +352,7 @@ def viz_priority_breakdown():
 
 
 # =========================
-# Viz 4: Routes Before vs After (if coords exist)
+# Viz 4: Routes Before vs After
 # =========================
 def viz_routes_before_after():
     b = read_json(BASELINE_ROUTES)
@@ -506,7 +504,7 @@ def viz_kpis():
     plt.tight_layout()
     out = os.path.join(OUT_DIR, "viz_5_kpis.png")
     plt.savefig(out, dpi=280)
-    print(f"✅ saved {out}")
+    print(f"saved {out}")
     plt.close(fig)
 
 
