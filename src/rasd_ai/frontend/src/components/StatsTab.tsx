@@ -117,7 +117,7 @@ export default function StatsTab({ priorities, summaries, metrics, t }: StatsTab
       fill="#e2e8f0"
       textAnchor={x > cx ? "start" : "end"}
       dominantBaseline="central"
-      style={{ fontSize: "12px", fontWeight: 700, paintOrder: "stroke" }}
+      style={{ fontSize: "10px", fontWeight: 700, paintOrder: "stroke" }}
       stroke="rgba(0,0,0,0.7)"
       strokeWidth={3}
     >
@@ -126,50 +126,50 @@ export default function StatsTab({ priorities, summaries, metrics, t }: StatsTab
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* Header */}
-      <div className="panel p-4">
-        <h2 className="text-2xl font-bold text-neon-cyan">{t("statsTitle")}</h2>
-        <p className="text-sm text-slate-400 mt-1">{t("statsSubtitle")}</p>
+      <div className="panel p-3 md:p-4">
+        <h2 className="text-lg md:text-2xl font-bold text-neon-cyan">{t("statsTitle")}</h2>
+        <p className="text-xs md:text-sm text-slate-400 mt-1">{t("statsSubtitle")}</p>
       </div>
 
-      {/* Quick Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="panel p-4 text-center">
-          <div className="text-3xl font-bold text-neon-cyan">{priorities.length}</div>
-          <div className="text-sm text-slate-400">{t("tanksMonitored")}</div>
+      {/* Quick Stats Cards - 2x2 grid on mobile */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+        <div className="panel p-2 md:p-4 text-center">
+          <div className="text-xl md:text-3xl font-bold text-neon-cyan">{priorities.length}</div>
+          <div className="text-[10px] md:text-sm text-slate-400">{t("tanksMonitored")}</div>
         </div>
-        <div className="panel p-4 text-center">
-          <div className="text-3xl font-bold text-red-400">
+        <div className="panel p-2 md:p-4 text-center">
+          <div className="text-xl md:text-3xl font-bold text-red-400">
             {priorities.filter((p) => p.tier === "HIGH").length}
           </div>
-          <div className="text-sm text-slate-400">{t("highPriorityCount")}</div>
+          <div className="text-[10px] md:text-sm text-slate-400">{t("highPriorityCount")}</div>
         </div>
-        <div className="panel p-4 text-center">
-          <div className="text-3xl font-bold text-green-400">
+        <div className="panel p-2 md:p-4 text-center">
+          <div className="text-xl md:text-3xl font-bold text-green-400">
             {(metrics.total_distance_km ?? 0).toFixed(1)} km
           </div>
-          <div className="text-sm text-slate-400">{t("totalDistance")}</div>
+          <div className="text-[10px] md:text-sm text-slate-400">{t("totalDistance")}</div>
         </div>
-        <div className="panel p-4 text-center">
-          <div className="text-3xl font-bold text-purple-400">{summaries.length}</div>
-          <div className="text-sm text-slate-400">{t("activeTrucks")}</div>
+        <div className="panel p-2 md:p-4 text-center">
+          <div className="text-xl md:text-3xl font-bold text-purple-400">{summaries.length}</div>
+          <div className="text-[10px] md:text-sm text-slate-400">{t("activeTrucks")}</div>
         </div>
       </div>
 
       {/* Charts Row 1 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-6">
         {/* Tier Distribution Pie */}
-        <div className="panel p-4">
-          <h3 className="text-lg font-semibold mb-4">{t("tierDistribution")}</h3>
-          <ResponsiveContainer width="100%" height={300}>
+        <div className="panel p-3 md:p-4">
+          <h3 className="text-sm md:text-lg font-semibold mb-2 md:mb-4">{t("tierDistribution")}</h3>
+          <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie
                 data={tierData}
                 cx="50%"
                 cy="50%"
-                innerRadius={60}
-                outerRadius={100}
+                innerRadius={40}
+                outerRadius={70}
                 paddingAngle={5}
                 dataKey="value"
                 label={renderPieLabel}
@@ -183,19 +183,19 @@ export default function StatsTab({ priorities, summaries, metrics, t }: StatsTab
                 contentStyle={{ background: "#0b1020", border: "1px solid #1b2342", color: "#e2e8f0" }}
                 itemStyle={{ color: "#e2e8f0" }}
               />
-              <Legend wrapperStyle={{ color: "#e2e8f0" }} />
+              <Legend wrapperStyle={{ color: "#e2e8f0", fontSize: "12px" }} />
             </PieChart>
           </ResponsiveContainer>
         </div>
 
         {/* Level Distribution Bar */}
-        <div className="panel p-4">
-          <h3 className="text-lg font-semibold mb-4">{t("levelDistribution")}</h3>
-          <ResponsiveContainer width="100%" height={300}>
+        <div className="panel p-3 md:p-4">
+          <h3 className="text-sm md:text-lg font-semibold mb-2 md:mb-4">{t("levelDistribution")}</h3>
+          <ResponsiveContainer width="100%" height={250}>
             <BarChart data={levelDistribution}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1b2342" />
-              <XAxis dataKey="range" stroke="#94a3b8" />
-              <YAxis stroke="#94a3b8" />
+              <XAxis dataKey="range" stroke="#94a3b8" tick={{ fontSize: 10 }} />
+              <YAxis stroke="#94a3b8" tick={{ fontSize: 10 }} />
               <Tooltip
                 contentStyle={{ background: "#0b1020", border: "1px solid #1b2342", color: "#e2e8f0" }}
                 itemStyle={{ color: "#00f0ff" }}

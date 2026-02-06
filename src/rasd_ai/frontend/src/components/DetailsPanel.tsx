@@ -23,30 +23,30 @@ export default function DetailsPanel({ selectedPit, selectedTruck, visualOverrid
   const isServiced = visualOverride !== null && visualOverride !== undefined;
 
   return (
-    <div className="panel p-4 h-full max-h-[85vh] overflow-auto">
-      <h3 className="text-sm text-slate-300 uppercase font-semibold">{t("details")}</h3>
+    <div className="panel p-3 md:p-4 h-full max-h-[85vh] md:max-h-[85vh] overflow-auto">
+      <h3 className="text-xs md:text-sm text-slate-300 uppercase font-semibold hidden xl:block">{t("details")}</h3>
 
       {!selectedPit && !selectedTruck && (
-        <div className="mt-8 text-center py-8">
-          <div className="text-4xl mb-4">📍</div>
-          <div className="text-slate-400 text-sm">{t("selectHint")}</div>
+        <div className="mt-4 md:mt-8 text-center py-4 md:py-8">
+          <div className="text-3xl md:text-4xl mb-2 md:mb-4">📍</div>
+          <div className="text-slate-400 text-xs md:text-sm">{t("selectHint")}</div>
         </div>
       )}
 
       {selectedPit && (
-        <div className="mt-4 space-y-4">
+        <div className="mt-2 md:mt-4 space-y-3 md:space-y-4">
           {/* Header */}
-          <div className="flex items-center justify-between">
-            <div className="text-xl font-bold">خزان #{selectedPit.tank_id}</div>
-            <span className={`px-3 py-1 rounded border text-sm font-bold ${tierBg(displayTier)}`}>
+          <div className="flex items-center justify-between gap-2">
+            <div className="text-lg md:text-xl font-bold">خزان #{selectedPit.tank_id}</div>
+            <span className={`px-2 md:px-3 py-0.5 md:py-1 rounded border text-xs md:text-sm font-bold ${tierBg(displayTier)}`}>
               {displayTier === "HIGH" ? t("tierHigh") : displayTier === "MEDIUM" ? t("tierMedium") : t("tierLow")}
             </span>
           </div>
 
           {/* Serviced Badge */}
           {isServiced && (
-            <div className="bg-green-500/20 border border-green-500/50 rounded-lg p-3 text-center">
-              <span className="text-green-400 font-bold">✅ تم التفريغ</span>
+            <div className="bg-green-500/20 border border-green-500/50 rounded-lg p-2 md:p-3 text-center">
+              <span className="text-green-400 font-bold text-sm md:text-base">✅ تم التفريغ</span>
             </div>
           )}
 

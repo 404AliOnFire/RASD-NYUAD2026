@@ -150,3 +150,202 @@ body {
   }
 }
 
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+
+/* Mobile-first base adjustments */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  /* Header adjustments */
+  .mobile-header {
+    padding: 0.5rem 1rem;
+  }
+
+  .mobile-header img {
+    height: 40px !important;
+  }
+
+  .mobile-header h1 {
+    font-size: 1.25rem !important;
+  }
+
+  .mobile-header p {
+    font-size: 0.7rem !important;
+  }
+
+  /* Hide subtitle on very small screens */
+  @media (max-width: 400px) {
+    .mobile-header p {
+      display: none;
+    }
+  }
+
+  /* Panel adjustments */
+  .panel, .panel-soft {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+  }
+
+  /* Map container mobile */
+  .map-mobile {
+    min-height: 50vh !important;
+    height: 50vh !important;
+  }
+
+  /* Cards grid */
+  .mobile-grid-2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Stats cards smaller text */
+  .mobile-stat-card {
+    padding: 0.5rem !important;
+  }
+
+  .mobile-stat-card .text-3xl {
+    font-size: 1.5rem !important;
+  }
+
+  .mobile-stat-card .text-sm {
+    font-size: 0.65rem !important;
+  }
+
+  /* Tabs scrollable on mobile */
+  .mobile-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .mobile-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-tabs-inner {
+    display: flex;
+    gap: 0.25rem;
+    min-width: max-content;
+  }
+
+  .mobile-tab {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    white-space: nowrap;
+  }
+
+  /* Control panel mobile */
+  .mobile-control-panel {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Details panel mobile - slide up drawer style */
+  .mobile-details-drawer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 60vh;
+    overflow-y: auto;
+    z-index: 1000;
+    border-radius: 1rem 1rem 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Toggle switches smaller */
+  .toggle-pill {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  /* Speed slider */
+  .mobile-slider {
+    width: 100%;
+  }
+
+  /* Charts responsive */
+  .recharts-wrapper {
+    max-width: 100% !important;
+  }
+
+  /* Leaflet controls positioning */
+  .leaflet-top.leaflet-left {
+    top: 10px;
+    left: 10px;
+  }
+
+  .leaflet-control-zoom {
+    margin: 0 !important;
+  }
+
+  .leaflet-control-zoom a {
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    font-size: 16px !important;
+  }
+
+  /* Popup mobile friendly */
+  .leaflet-popup-content-wrapper {
+    padding: 0.5rem !important;
+    max-width: 200px;
+  }
+
+  .leaflet-popup-content {
+    margin: 0.5rem !important;
+    font-size: 0.85rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 400px) {
+  .panel, .panel-soft {
+    padding: 0.5rem;
+  }
+
+  .mobile-stat-card .text-3xl {
+    font-size: 1.25rem !important;
+  }
+
+  .map-mobile {
+    min-height: 40vh !important;
+    height: 40vh !important;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .tablet-grid {
+    grid-template-columns: 280px 1fr !important;
+  }
+}
+
+/* Touch-friendly buttons */
+@media (pointer: coarse) {
+  button, .toggle-pill, .mobile-tab {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .leaflet-control-zoom a {
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+  }
+}
+
+/* Hide scrollbars on mobile */
+@media (max-width: 768px) {
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+

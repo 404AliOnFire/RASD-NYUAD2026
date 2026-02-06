@@ -139,22 +139,22 @@ export default function App() {
 
   return (
     <div className={`min-h-screen ${fontClass}`} dir={dir}>
-      {/* Header */}
-      <header className="bg-panel border-b border-grid px-4 py-3">
+      {/* Header - Mobile Responsive */}
+      <header className="bg-panel border-b border-grid px-3 md:px-4 py-2 md:py-3 mobile-header">
         <div className="flex items-center justify-between">
           {/* Logo and Title */}
-          <div className="flex items-center gap-4">
-            <img src="/logo/RASD.png" alt="RASD" className="h-14 md:h-16 w-auto" />
-            <div>
-              <h1 className="text-2xl font-bold text-neon-cyan">{t("appTitle")}</h1>
-              <p className="text-sm text-slate-400">{t("appSubtitle")}</p>
+          <div className="flex items-center gap-2 md:gap-4">
+            <img src="/logo/RASD.png" alt="RASD" className="h-10 md:h-14 lg:h-16 w-auto" />
+            <div className="min-w-0">
+              <h1 className="text-lg md:text-2xl font-bold text-neon-cyan truncate">{t("appTitle")}</h1>
+              <p className="text-xs md:text-sm text-slate-400 hidden sm:block">{t("appSubtitle")}</p>
             </div>
           </div>
 
           {/* Language Toggle */}
           <button
             type="button"
-            className="panel-soft px-4 py-2 text-sm font-medium hover:border-neon-cyan transition"
+            className="panel-soft px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium hover:border-neon-cyan transition flex-shrink-0"
             onClick={toggleLang}
           >
             {lang === "ar" ? "EN" : "عربي"}
@@ -162,52 +162,172 @@ export default function App() {
         </div>
       </header>
 
-      {/* Tabs */}
-      <div className="px-4 py-3 border-b border-grid bg-panel/50">
+      {/* Tabs - Scrollable on mobile */}
+      <div className="px-2 md:px-4 py-2 md:py-3 border-b border-grid bg-panel/50 mobile-tabs">
         <Tabs active={activeTab} setActive={setActiveTab} tabs={tabConfig} />
       </div>
 
       {/* Main Content */}
-      <main className="p-4">
+      <main className="p-2 md:p-4">
         {/* Home Tab - Map View */}
         {activeTab === "home" && (
-          <div className="grid grid-cols-1 xl:grid-cols-[320px_1fr_300px] gap-4">
-            <ControlPanel
-              metrics={metrics}
-              toggles={toggles}
-              setToggles={setToggles}
-              speed={speed}
-              setSpeed={setSpeed}
-              priorities={data.priorities}
-              summaries={routeSummaries}
-              focusTruckId={focusTruckId}
-              setFocusTruckId={setFocusTruckId}
-              servicedPitsCount={servicedPitsCount}
-              t={t}
-            />
+          <>
+            {/* Mobile: Stack vertically, Desktop: 3-column grid */}
+            <div className="hidden xl:grid xl:grid-cols-[320px_1fr_300px] gap-4">
+              <ControlPanel
+                metrics={metrics}
+                toggles={toggles}
+                setToggles={setToggles}
+                speed={speed}
+                setSpeed={setSpeed}
+                priorities={data.priorities}
+                summaries={routeSummaries}
+                focusTruckId={focusTruckId}
+                setFocusTruckId={setFocusTruckId}
+                servicedPitsCount={servicedPitsCount}
+                t={t}
+              />
 
-            <MapView
-              nodes={data.nodes}
-              priorities={data.priorities}
-              routes={quantumRoutes}
-              toggles={toggles}
-              onSelectPit={handleSelectPit}
-              onSelectTruck={(summary) => setSelectedTruck(summary)}
-              summaries={routeSummaries}
-              speed={speed}
-              focusTruckId={focusTruckId}
-              closures={data.closures}
-              depot={data.routesForFrontend?.depot}
-              onServicedCountChange={setServicedPitsCount}
-            />
+              <MapView
+                nodes={data.nodes}
+                priorities={data.priorities}
+                routes={quantumRoutes}
+                toggles={toggles}
+                onSelectPit={handleSelectPit}
+                onSelectTruck={(summary) => setSelectedTruck(summary)}
+                summaries={routeSummaries}
+                speed={speed}
+                focusTruckId={focusTruckId}
+                closures={data.closures}
+                depot={data.routesForFrontend?.depot}
+                onServicedCountChange={setServicedPitsCount}
+              />
 
-            <DetailsPanel
-              selectedPit={selectedPit}
-              selectedTruck={selectedTruck}
-              visualOverride={selectedPitVisualOverride}
-              t={t}
-            />
-          </div>
+              <DetailsPanel
+                selectedPit={selectedPit}
+                selectedTruck={selectedTruck}
+                visualOverride={selectedPitVisualOverride}
+                t={t}
+              />
+            </div>
+
+            {/* Mobile Layout */}
+            <div className="xl:hidden space-y-3">
+              {/* Quick Stats - 2x2 grid on mobile */}
+              <div className="grid grid-cols-2 gap-2">
+                <div className="panel p-3 text-center mobile-stat-card">
+                  <div className="text-2xl md:text-3xl font-bold text-neon-cyan">{routeSummaries.length}</div>
+                  <div className="text-xs text-slate-400">{t("activeTrucks")}</div>
+                </div>
+                <div className="panel p-3 text-center mobile-stat-card">
+                  <div className="text-2xl md:text-3xl font-bold text-red-400">
+                    {data.priorities.filter((p) => p.tier === "HIGH").length}
+                  </div>
+                  <div className="text-xs text-slate-400">{t("criticalAlerts")}</div>
+                </div>
+                <div className="panel p-3 text-center mobile-stat-card">
+                  <div className="text-2xl md:text-3xl font-bold text-green-400">{servicedPitsCount}</div>
+                  <div className="text-xs text-slate-400">{t("servicedTanks")}</div>
+                </div>
+                <div className="panel p-3 text-center mobile-stat-card">
+                  <div className="text-2xl md:text-3xl font-bold text-purple-400">{data.priorities.length}</div>
+                  <div className="text-xs text-slate-400">{t("tanksMonitored")}</div>
+                </div>
+              </div>
+
+              {/* Map Controls - Horizontal scroll on mobile */}
+              <div className="panel p-2 overflow-x-auto hide-scrollbar">
+                <div className="flex gap-2 min-w-max">
+                  <label className="toggle-pill cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={toggles.pits}
+                      onChange={(e) => setToggles({ ...toggles, pits: e.target.checked })}
+                      className="sr-only"
+                    />
+                    <span className={`w-3 h-3 rounded-full ${toggles.pits ? 'bg-neon-cyan' : 'bg-gray-500'}`} />
+                    <span className="text-xs">{t("showTanks")}</span>
+                  </label>
+                  <label className="toggle-pill cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={toggles.routes}
+                      onChange={(e) => setToggles({ ...toggles, routes: e.target.checked })}
+                      className="sr-only"
+                    />
+                    <span className={`w-3 h-3 rounded-full ${toggles.routes ? 'bg-neon-cyan' : 'bg-gray-500'}`} />
+                    <span className="text-xs">{t("showRoutes")}</span>
+                  </label>
+                  <label className="toggle-pill cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={toggles.heatmap}
+                      onChange={(e) => setToggles({ ...toggles, heatmap: e.target.checked })}
+                      className="sr-only"
+                    />
+                    <span className={`w-3 h-3 rounded-full ${toggles.heatmap ? 'bg-neon-cyan' : 'bg-gray-500'}`} />
+                    <span className="text-xs">{t("showHeatmap")}</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Map - Larger on mobile */}
+              <div className="map-mobile rounded-xl overflow-hidden" style={{ minHeight: '50vh' }}>
+                <MapView
+                  nodes={data.nodes}
+                  priorities={data.priorities}
+                  routes={quantumRoutes}
+                  toggles={toggles}
+                  onSelectPit={handleSelectPit}
+                  onSelectTruck={(summary) => setSelectedTruck(summary)}
+                  summaries={routeSummaries}
+                  speed={speed}
+                  focusTruckId={focusTruckId}
+                  closures={data.closures}
+                  depot={data.routesForFrontend?.depot}
+                  onServicedCountChange={setServicedPitsCount}
+                />
+              </div>
+
+              {/* Speed Slider */}
+              <div className="panel p-3">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs text-slate-400">{t("animationSpeed")}</span>
+                  <span className="text-xs text-neon-cyan">{speed.toFixed(1)}x</span>
+                </div>
+                <input
+                  type="range"
+                  min="0.25"
+                  max="2"
+                  step="0.25"
+                  value={speed}
+                  onChange={(e) => setSpeed(parseFloat(e.target.value))}
+                  className="w-full h-2 bg-panel-soft rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+
+              {/* Details Drawer - Shows when something is selected */}
+              {(selectedPit || selectedTruck) && (
+                <div className="panel p-3">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold">{t("details")}</h3>
+                    <button
+                      onClick={() => { setSelectedPit(null); setSelectedTruck(null); }}
+                      className="text-slate-400 hover:text-white text-lg"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <DetailsPanel
+                    selectedPit={selectedPit}
+                    selectedTruck={selectedTruck}
+                    visualOverride={selectedPitVisualOverride}
+                    t={t}
+                  />
+                </div>
+              )}
+            </div>
+          </>
         )}
 
         {/* Trucks Tab */}
@@ -250,11 +370,11 @@ export default function App() {
         {activeTab === "info" && <InfoTab t={t} />}
       </main>
 
-      {/* Toast Messages */}
+      {/* Toast Messages - Mobile friendly positioning */}
       {toastMessages.length > 0 && (
-        <div className="fixed bottom-4 left-4 space-y-2 max-w-sm z-50">
+        <div className="fixed bottom-4 left-2 right-2 md:left-4 md:right-auto space-y-2 max-w-sm z-50">
           {toastMessages.map((msg, idx) => (
-            <div key={`${msg}-${idx}`} className="panel-soft px-4 py-2 text-sm text-slate-200">
+            <div key={`${msg}-${idx}`} className="panel-soft px-3 py-2 text-xs md:text-sm text-slate-200">
               ⚠️ {msg}
             </div>
           ))}

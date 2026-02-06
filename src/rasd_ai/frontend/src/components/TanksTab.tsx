@@ -62,23 +62,23 @@ export default function TanksTab({ priorities, nodes, onSelectTank, t }: TanksTa
   }), [priorities]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 md:space-y-4">
       {/* Header */}
-      <div className="panel p-4">
-        <h2 className="text-xl font-bold text-neon-cyan">{t("tanksList")}</h2>
+      <div className="panel p-3 md:p-4">
+        <h2 className="text-lg md:text-xl font-bold text-neon-cyan">{t("tanksList")}</h2>
       </div>
 
       {/* Filters */}
-      <div className="panel p-4">
-        <div className="flex flex-wrap items-center gap-4">
+      <div className="panel p-3 md:p-4">
+        <div className="flex flex-col md:flex-row md:flex-wrap md:items-center gap-3 md:gap-4">
           {/* Tier Filter Buttons */}
-          <div className="flex gap-2">
+          <div className="flex gap-1 md:gap-2 overflow-x-auto hide-scrollbar">
             {(["all", "HIGH", "MEDIUM", "LOW"] as const).map((f) => (
               <button
                 key={f}
                 type="button"
                 onClick={() => setFilter(f)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition ${
+                className={`px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-medium transition whitespace-nowrap ${
                   filter === f
                     ? f === "HIGH" ? "bg-red-500 text-white" 
                       : f === "MEDIUM" ? "bg-yellow-500 text-black"
@@ -98,14 +98,14 @@ export default function TanksTab({ priorities, nodes, onSelectTank, t }: TanksTa
             placeholder={t("search")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="bg-panel-soft border border-grid rounded-lg px-3 py-2 text-sm w-32"
+            className="bg-panel-soft border border-grid rounded-lg px-3 py-2 text-xs md:text-sm w-full md:w-32"
           />
 
           {/* Sort */}
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="bg-panel-soft border border-grid rounded-lg px-3 py-2 text-sm"
+            className="bg-panel-soft border border-grid rounded-lg px-3 py-2 text-xs md:text-sm w-full md:w-auto"
           >
             <option value="priority">{t("priority")}</option>
             <option value="tto">{t("timeToOverflow")}</option>
@@ -114,27 +114,27 @@ export default function TanksTab({ priorities, nodes, onSelectTank, t }: TanksTa
         </div>
       </div>
 
-      {/* Tanks Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {/* Tanks Grid - Responsive */}
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-4">
         {filteredTanks.map((tank) => (
           <button
             key={tank.tank_id}
             type="button"
             onClick={() => onSelectTank(tank)}
-            className={`panel p-4 text-right transition hover:scale-[1.02] border ${tierBg(tank.tier)}`}
+            className={`panel p-2 md:p-4 text-right transition hover:scale-[1.02] border ${tierBg(tank.tier)}`}
           >
-            <div className="flex items-center justify-between mb-3">
-              <span className={`h-3 w-3 rounded-full ${tierDot(tank.tier)}`} />
-              <span className="text-lg font-bold">#{tank.tank_id}</span>
+            <div className="flex items-center justify-between mb-2 md:mb-3">
+              <span className={`h-2 w-2 md:h-3 md:w-3 rounded-full ${tierDot(tank.tier)}`} />
+              <span className="text-sm md:text-lg font-bold">#{tank.tank_id}</span>
             </div>
 
             {/* Fill Level Bar */}
-            <div className="mb-3">
-              <div className="flex justify-between text-xs mb-1">
+            <div className="mb-2 md:mb-3">
+              <div className="flex justify-between text-[10px] md:text-xs mb-1">
                 <span className="text-slate-400">{t("fillLevel")}</span>
                 <span className="font-bold">{tank.level_pct}%</span>
               </div>
-              <div className="h-2 bg-panel-soft rounded-full overflow-hidden">
+              <div className="h-1.5 md:h-2 bg-panel-soft rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full ${
                     tank.level_pct >= 80 ? 'bg-red-500' : tank.level_pct >= 50 ? 'bg-yellow-500' : 'bg-green-500'
@@ -144,16 +144,16 @@ export default function TanksTab({ priorities, nodes, onSelectTank, t }: TanksTa
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2 text-sm">
+            <div className="grid grid-cols-2 gap-1 md:gap-2 text-[10px] md:text-sm">
               <div>
-                <div className="text-xs text-slate-400">{t("timeToOverflow")}</div>
+                <div className="text-[10px] md:text-xs text-slate-400 truncate">{t("timeToOverflow")}</div>
                 <div className={`font-bold ${tank.tto_hours <= 24 ? 'text-red-400' : ''}`}>
-                  {tank.tto_hours} {t("hours")}
+                  {tank.tto_hours}h
                 </div>
               </div>
               <div>
-                <div className="text-xs text-slate-400">{t("priority")}</div>
-                <div className="font-bold text-neon-cyan">{tank.priority.toFixed(2)}</div>
+                <div className="text-[10px] md:text-xs text-slate-400">{t("priority")}</div>
+                <div className="font-bold text-neon-cyan">{tank.priority.toFixed(1)}</div>
               </div>
             </div>
           </button>
@@ -162,9 +162,9 @@ export default function TanksTab({ priorities, nodes, onSelectTank, t }: TanksTa
 
       {/* Empty state */}
       {filteredTanks.length === 0 && (
-        <div className="panel p-8 text-center">
-          <div className="text-4xl mb-4">🔍</div>
-          <div className="text-slate-400">لا توجد خزانات مطابقة</div>
+        <div className="panel p-6 md:p-8 text-center">
+          <div className="text-3xl md:text-4xl mb-3 md:mb-4">🔍</div>
+          <div className="text-slate-400 text-sm md:text-base">لا توجد خزانات مطابقة</div>
         </div>
       )}
     </div>
