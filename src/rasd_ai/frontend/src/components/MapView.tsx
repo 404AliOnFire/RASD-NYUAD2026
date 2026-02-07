@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { MapContainer, TileLayer, CircleMarker, Polyline, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
-import "leaflet.heat";
+// Note: leaflet.heat removed - using pure React circles for better production compatibility
 import { NodeRecord, PriorityRecord, RouteSummary, RouteData, ClosureRecord } from "../types";
 
 interface MapViewProps {
@@ -93,24 +93,72 @@ function tierColor(tier: string) {
   return "#22c55e";
 }
 
+// Pure React heatmap implementation - works in production without leaflet.heat plugin
 function HeatLayer({ points }: { points: Array<[number, number, number]> }) {
-  const map = useMap();
-  const layerRef = useRef<L.Layer | null>(null);
+  if (!points.length) {
+    return null;
+  }
 
-  useEffect(() => {
-    if (!points.length) return;
-    const heatFactory = (L as any).heatLayer;
-    if (!heatFactory) return;
-    const layer = heatFactory(points, { radius: 28, blur: 18, maxZoom: 14 }) as L.Layer;
-    layer.addTo(map);
-    layerRef.current = layer;
-    return () => {
-      if (layerRef.current) map.removeLayer(layerRef.current);
-      layerRef.current = null;
-    };
-  }, [map, points]);
+  // Render colored circles with gradient effect based on priority weight
+  return (
+    <>
+      {points.map(([lat, lon, weight], idx) => {
+        // Color gradient: green (low) -> yellow (medium) -> red (high)
+        let color: string;
+        let glowColor: string;
+        if (weight > 0.7) {
+          color = '#ff3b3b';
+          glowColor = 'rgba(255, 59, 59, 0.4)';
+        } else if (weight > 0.4) {
+          color = '#facc15';
+          glowColor = 'rgba(250, 204, 21, 0.4)';
+        } else {
+          color = '#22c55e';
+          glowColor = 'rgba(34, 197, 94, 0.4)';
+        }
 
-  return null;
+        // Outer glow circle
+        const outerRadius = 20 + weight * 35;
+        // Inner solid circle
+        const innerRadius = 8 + weight * 12;
+
+        return (
+          <React.Fragment key={`heat-${idx}`}>
+            {/* Outer glow effect */}
+            <CircleMarker
+              center={[lat, lon]}
+              radius={outerRadius}
+              pathOptions={{
+                stroke: false,
+                fillColor: glowColor,
+                fillOpacity: 0.25 + weight * 0.2,
+              }}
+            />
+            {/* Middle glow */}
+            <CircleMarker
+              center={[lat, lon]}
+              radius={outerRadius * 0.6}
+              pathOptions={{
+                stroke: false,
+                fillColor: color,
+                fillOpacity: 0.3 + weight * 0.15,
+              }}
+            />
+            {/* Inner core */}
+            <CircleMarker
+              center={[lat, lon]}
+              radius={innerRadius}
+              pathOptions={{
+                stroke: false,
+                fillColor: color,
+                fillOpacity: 0.5 + weight * 0.3,
+              }}
+            />
+          </React.Fragment>
+        );
+      })}
+    </>
+  );
 }
 
 // Interpolate position between two coordinates

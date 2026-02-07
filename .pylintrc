@@ -1,0 +1,60 @@
+[MAIN]
+# Specify a score threshold to fail the build if the score is lower
+fail-under=9.0
+
+# Files or directories to be skipped
+ignore=frontend,__pycache__,.venv,node_modules
+
+# Add files or directories matching the regex patterns to ignore list
+ignore-patterns=QR_CODE.py
+
+# Python code to execute before analysis
+init-hook='import sys; sys.path.insert(0, "src")'
+
+[MESSAGES CONTROL]
+# Disable specific warnings
+disable=
+    duplicate-code,
+    too-many-instance-attributes,
+    too-many-arguments,
+    too-few-public-methods,
+    invalid-name,
+    too-many-locals,
+    too-many-branches,
+    too-many-statements,
+    too-many-public-methods,
+    too-many-positional-arguments,
+    disallowed-name,
+    trailing-newlines,
+    wrong-import-position,
+    no-else-return,
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=110
+
+# Maximum number of lines in a module
+max-module-lines=500
+
+[DESIGN]
+# Maximum number of locals for function / method body
+max-locals=50
+
+# Maximum number of arguments for function / method
+max-args=10
+
+# Maximum number of statements in function / method body
+max-statements=150
+
+[SIMILARITIES]
+# Minimum lines number of a similarity
+min-similarity-lines=10
+
+# Ignore comments when computing similarities
+ignore-comments=yes
+
+# Ignore docstrings when computing similarities
+ignore-docstrings=yes
+
+# Ignore imports when computing similarities
+ignore-imports=yes

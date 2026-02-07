@@ -1,25 +1,42 @@
+"""
+Prophet forecast visualization module.
+
+Generates forecast charts for tank fill levels using Prophet model.
+"""
+
 import pandas as pd
 import matplotlib.pyplot as plt
-from predictor import ProphetForecaster
 
-df = pd.read_csv("outputs/mock_hebron.csv")
+from rasd_ai.config.paths import PATHS
+from rasd_ai.forecasting.prophet_model import ProphetForecaster
 
-tank_id = df["tank_id"].iloc[0]
-df_tank = df[df["tank_id"] == tank_id]
 
-#  Prophet
-forecaster = ProphetForecaster(threshold=100.0, horizon_hours=72)
-pred = forecaster.fit_predict_tto(df_tank)
+def main() -> None:
+    """Generate Prophet forecast visualization."""
+    data_frame = pd.read_csv(PATHS.mock_data_csv)
 
-plt.figure(figsize=(8,4))
-plt.plot(df_tank["timestamp"], df_tank["level_pct"], label="Sensor Data")
-plt.axhline(100, color="red", linestyle="--", label="Overflow Threshold")
+    tank_id = data_frame["tank_id"].iloc[0]
+    df_tank = data_frame[data_frame["tank_id"] == tank_id]
 
-plt.title("Tank Fill Level Forecast")
-plt.xlabel("Time")
-plt.ylabel("Level (%)")
-plt.legend()
-plt.tight_layout()
+    # Run Prophet forecast
+    forecaster = ProphetForecaster(threshold=100.0, horizon_hours=72)
+    _pred = forecaster.fit_predict_tto(df_tank)
 
-plt.savefig("outputs/prophet_forecast.png", dpi=200)
-plt.show()
+    plt.figure(figsize=(8, 4))
+    plt.plot(df_tank["timestamp"], df_tank["level_pct"], label="Sensor Data")
+    plt.axhline(100, color="red", linestyle="--", label="Overflow Threshold")
+
+    plt.title("Tank Fill Level Forecast")
+    plt.xlabel("Time")
+    plt.ylabel("Level (%)")
+    plt.legend()
+    plt.tight_layout()
+
+    output_path = PATHS.outputs / "prophet_forecast.png"
+    plt.savefig(output_path, dpi=200)
+    print(f"✅ saved {output_path}")
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,7 +1,5 @@
 {
-  "total_travel_min": 74.08,
-  "served_total": 10,
-  "high_total": 10,
-  "high_served": 10,
-  "high_missed": 0
+  "solver_used": "ocean_simulated_annealing",
+  "problem_size": "toy 10 pits 2 trucks",
+  "note": "CQM is reference model for D-Wave hybrid QPU when available; demo uses annealing simulation"
 }

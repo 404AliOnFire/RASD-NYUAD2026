@@ -1,0 +1,23 @@
+﻿# RASD - Requirements
+# Core dependencies for running the RASD pipeline
+
+# Data processing
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Time series forecasting
+prophet>=1.1.0
+
+# Quantum optimization
+dwave-ocean-sdk>=6.0.0
+
+# Visualization
+matplotlib>=3.7.0
+
+# Code quality (development)
+black>=23.0.0
+pylint>=3.0.0
+isort>=5.0.0
+
+# Optional: QR code generation
+qrcode>=7.0.0
